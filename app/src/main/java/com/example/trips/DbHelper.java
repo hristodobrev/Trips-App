@@ -71,10 +71,10 @@ public class DbHelper extends SQLiteOpenHelper {
         );
     }
 
-    public void delete(Trip trip){
+    public void delete(int id) {
         _db.execSQL("DELETE FROM trips WHERE Id = ? ",
                 new Object[]{
-                        trip.Id
+                        id
                 }
         );
     }
@@ -88,7 +88,7 @@ public class DbHelper extends SQLiteOpenHelper {
         while (cursor.moveToNext()){
             @SuppressLint("Range")
             Trip trip = new Trip(
-                    cursor.getString(cursor.getColumnIndex("Id")),
+                    Integer.parseInt(cursor.getString(cursor.getColumnIndex("Id"))),
                     cursor.getString(cursor.getColumnIndex("Title")),
                     cursor.getString(cursor.getColumnIndex("Description")),
                     cursor.getString(cursor.getColumnIndex("Picture")),

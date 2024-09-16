@@ -24,11 +24,6 @@
         android:hint="Location"
         android:id="@+id/editLocation"
         />
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -51,15 +46,28 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="Cancel"
-            android:backgroundTint="@color/material_dynamic_neutral70"
+            android:backgroundTint="#aaa"
             android:id="@+id/btnCancel"
             />
         <Button
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content"
-            android:text="Post"
+            android:text="Create"
             android:id="@+id/btnPost"
             />
     </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#aa0022"
+        android:text="Delete"
+        android:id="@+id/btnDelete"
+        android:visibility="invisible"
+        />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        />
 </LinearLayout>

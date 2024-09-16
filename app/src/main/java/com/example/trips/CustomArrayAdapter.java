@@ -33,7 +33,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Trip> {
             );
         }
 
-        ((TextView) (convertView.findViewById(R.id.listViewId))).setText(trip.Id);
+        ((TextView) (convertView.findViewById(R.id.listViewId))).setText(Integer.toString(trip.Id));
         ((TextView) (convertView.findViewById(R.id.listViewTitle))).setText(trip.Title);
         ((TextView) (convertView.findViewById(R.id.listViewDescription))).setText(trip.Description);
         ((TextView) (convertView.findViewById(R.id.listViewDate))).setText(trip.Date);
@@ -42,5 +42,4 @@ public class CustomArrayAdapter extends ArrayAdapter<Trip> {
 
         return convertView;
     }
-
 }
