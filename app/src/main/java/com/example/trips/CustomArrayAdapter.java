@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,7 +38,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Trip> {
         ((TextView) (convertView.findViewById(R.id.listViewTitle))).setText(trip.Title);
         ((TextView) (convertView.findViewById(R.id.listViewDescription))).setText(trip.Description);
         ((TextView) (convertView.findViewById(R.id.listViewDate))).setText(trip.Date);
-        ((TextView) (convertView.findViewById(R.id.listViewPicture))).setText(trip.Picture);
+        PictureHelper.showPicture(trip.Picture, convertView.findViewById(R.id.listViewImageView));
         ((TextView) (convertView.findViewById(R.id.listViewLocation))).setText(trip.Location);
 
         return convertView;

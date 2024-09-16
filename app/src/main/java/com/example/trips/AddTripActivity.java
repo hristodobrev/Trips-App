@@ -30,7 +30,7 @@ public class AddTripActivity extends AppCompatActivity {
     public static final int REQUEST_IMAGE_CAPTURE = 3;
 
     EditText editTitle, editPicture, editDescription, editLocation;
-    Button btnPost, btnCancel, btnDelete, btnTakePicture;
+    Button btnPost, btnCancel, btnDelete, btnTakePicture, btnShowMap;
     ImageView imageView;
 
     String currentPicturePath;
@@ -48,22 +48,22 @@ public class AddTripActivity extends AppCompatActivity {
         editLocation = findViewById(R.id.editLocation);
         imageView = findViewById(R.id.imageView);
         btnPost = findViewById(R.id.btnPost);
+        btnShowMap = findViewById(R.id.btnShowMap);
         btnCancel = findViewById(R.id.btnCancel);
         btnDelete = findViewById(R.id.btnDelete);
         btnTakePicture = findViewById(R.id.btnTakePicture);
 
-
-        final Bundle b = getIntent().getExtras();
-        if (b != null && b.containsKey("Id")) {
-            this.id = Integer.parseInt(b.getString("Id"));
-            editTitle.setText(b.getString("Title"));
-            editDescription.setText(b.getString("Description"));
-            editPicture.setText(b.getString("Picture"));
-            if (!b.getString("Picture").isEmpty()) {
-                currentPicturePath = b.getString("Picture");
-                showPicture();
+        final Bundle bundle = getIntent().getExtras();
+        if (bundle != null && bundle.containsKey("Id")) {
+            this.id = Integer.parseInt(bundle.getString("Id"));
+            editTitle.setText(bundle.getString("Title"));
+            editDescription.setText(bundle.getString("Description"));
+            editPicture.setText(bundle.getString("Picture"));
+            if (!bundle.getString("Picture").isEmpty()) {
+                currentPicturePath = bundle.getString("Picture");
+                PictureHelper.showPicture(currentPicturePath, imageView);
             }
-            editLocation.setText(b.getString("Location"));
+            editLocation.setText(bundle.getString("Location"));
             btnPost.setText("Edit");
             btnDelete.setVisibility(View.VISIBLE);
         }
@@ -129,6 +129,14 @@ public class AddTripActivity extends AppCompatActivity {
             setResult(RESULT_OK);
             finish();
         });
+
+        btnShowMap.setOnClickListener(view -> {
+            Bundle mapBundle = new Bundle();
+            mapBundle.putString("Location", editLocation.getText().toString());
+            Intent intent = new Intent(AddTripActivity.this, MapsFragment.class);
+            intent.putExtras(mapBundle);
+            startActivity(intent, mapBundle);
+        });
     }
 
     @Override
@@ -137,7 +145,7 @@ public class AddTripActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             editPicture.setText(currentPicturePath);
-            showPicture();
+            PictureHelper.showPicture(currentPicturePath, imageView);
         }
     }
 
@@ -174,43 +182,5 @@ public class AddTripActivity extends AppCompatActivity {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
-    }
-
-    private void showPicture() {
-        Bitmap bitmap = BitmapFactory.decodeFile(currentPicturePath);
-
-        ExifInterface ei = null;
-        try {
-            ei = new ExifInterface(currentPicturePath);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED);
-
-        Bitmap rotatedBitmap = null;
-        switch(orientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                rotatedBitmap = rotateImage(bitmap, 90);
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                rotatedBitmap = rotateImage(bitmap, 180);
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                rotatedBitmap = rotateImage(bitmap, 270);
-                break;
-            case ExifInterface.ORIENTATION_NORMAL:
-            default:
-                rotatedBitmap = bitmap;
-        }
-
-        imageView.setImageBitmap(rotatedBitmap);
-    }
-
-    public static Bitmap rotateImage(Bitmap source, float angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
-                matrix, true);
     }
 }
